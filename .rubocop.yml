@@ -1,5 +1,7 @@
 require:
   - rubocop-performance
+  - rubocop-minitest
+  - rubocop-rake
 
 AllCops:
   # Exclude directories like vendor/bundle, logs, etc.

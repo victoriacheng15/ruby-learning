@@ -1,0 +1,53 @@
+name: RuboCop Format
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'test/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'test/**'
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || 'main'}}
+          persist-credentials: true
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Run RuboCop
+        run: bundle exec rubocop -A lib/ test/
+      
+      - name: Git config
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push changes
+        run: |
+          git add .
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          else
+            git commit -m "ci: fix RuboCop offenses"
+            git push origin HEAD:${{ github.head_ref }}
+          fi

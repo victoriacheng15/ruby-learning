@@ -3,8 +3,14 @@ name: RuboCop Format
 on:
   push:
     branches: [main]
+    paths:
+      - 'lib/**'
+      - 'test/**'
   pull_request:
     branches: [main]
+    paths:
+      - 'lib/**'
+      - 'test/**'
 
 jobs:
   rubocop:

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CatTool
   def self.option_definition(options)
     OptionParser.new do |opts|
@@ -18,7 +20,7 @@ module CatTool
   def self.parse_options(args)
     options = {
       number_lines: false,
-      number_nonblank_lines: false,
+      number_nonblank_lines: false
     }
     parser = option_definition(options)
     parser.parse!(args)
@@ -41,6 +43,4 @@ module CatTool
 end
 
 # To run CLI only if this file is executed directly
-if __FILE__ == $PROGRAM_NAME
-  CatTool.run_cli(ARGV)
-end
+CatTool.run_cli(ARGV) if __FILE__ == $PROGRAM_NAME

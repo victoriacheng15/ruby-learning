@@ -57,12 +57,12 @@ module WcTool
 
   def self.print_output(result, options)
     output = if options.values.none?
-              default_output(result)
-            else
-              selective_output(
-                result, options
-              )
-            end
+               default_output(result)
+             else
+               selective_output(
+                 result, options
+               )
+             end
     puts output.join(options.values.none? ? "\t" : ' ')
   end
 
@@ -87,6 +87,4 @@ module WcTool
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
-  WcTool.run_cli(ARGV)
-end
+WcTool.run_cli(ARGV) if __FILE__ == $PROGRAM_NAME

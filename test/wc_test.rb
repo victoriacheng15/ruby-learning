@@ -4,33 +4,39 @@ require 'minitest/autorun'
 require 'stringio'
 require_relative '../lib/wc'
 
-describe 'WC command - parse_option' do
-  it "parse -l option" do
-    options, _ = WcTool.parse_options(['-l', 'test.txt'])
+describe 'WC command - parse_option -l' do
+  it 'parse -l option' do
+    options, = WcTool.parse_options(['-l', 'test.txt'])
     _(options[:lines]).must_equal true
     _(options[:words]).must_equal false
     _(options[:chars]).must_equal false
     _(options[:bytes]).must_equal false
   end
+end
 
-  it "parse -w option" do
-    options, _ = WcTool.parse_options(['-w', 'test.txt'])
+describe 'WC command - parse_option -w' do
+  it 'parse -w option' do
+    options, = WcTool.parse_options(['-w', 'test.txt'])
     _(options[:lines]).must_equal false
     _(options[:words]).must_equal true
     _(options[:chars]).must_equal false
     _(options[:bytes]).must_equal false
   end
+end
 
-  it "parse -m option" do
-    options, _ = WcTool.parse_options(['-m', 'test.txt'])
+describe 'WC command - parse_option -m' do
+  it 'parse -m option' do
+    options, = WcTool.parse_options(['-m', 'test.txt'])
     _(options[:lines]).must_equal false
     _(options[:words]).must_equal false
     _(options[:chars]).must_equal true
     _(options[:bytes]).must_equal false
   end
-  
-  it "parse -c option" do
-    options, _ = WcTool.parse_options(['-c', 'test.txt'])
+end
+
+describe 'WC command - parse_option -c' do
+  it 'parse -c option' do
+    options, = WcTool.parse_options(['-c', 'test.txt'])
     _(options[:lines]).must_equal false
     _(options[:words]).must_equal false
     _(options[:chars]).must_equal false

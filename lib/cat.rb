@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'optparse'
+
 module CatTool
   def self.option_definition(options)
     OptionParser.new do |opts|
@@ -27,20 +29,40 @@ module CatTool
     [options, args]
   end
 
-  def self.process_input(content, filename)
+  def self.print_output(content, options)
+    if options[:number_lines]
+      content.each_line.with_index(1) do |line, index|
+        print "\t#{index} #{line}"
+      end
+    elsif options[:number_nonblank_lines]
+      line_number = 1
+      content.each_line do |line|
+        if line.strip.empty?
+          print line
+        else
+          print "\t#{line_number} #{line}"
+          line_number += 1
+        end
+      end
+    else
+      print content
+    end
+  end
+
+  def self.process_input(content, options)
     text = content.respond_to?(:read) ? content.read : content
     text.force_encoding('BINARY')
 
-    puts "Processing file: #{filename}"
-    puts text
+    print_output(text, options)
   end
 
   def self.run_cli(argv)
     options, args = parse_options(argv)
-    puts "Options: #{options.inspect}"
-    puts "Arguments: #{args.inspect}"
+    filename = args[0]
+
+    File.open(filename, 'r') do |file|
+      content = file.read
+      process_input(content, options)
+    end
   end
 end
-
-# To run CLI only if this file is executed directly
-CatTool.run_cli(ARGV) if __FILE__ == $PROGRAM_NAME

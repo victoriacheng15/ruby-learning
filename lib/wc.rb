@@ -86,5 +86,3 @@ module WcTool
     print_output(result, options)
   end
 end
-
-WcTool.run_cli(ARGV) if __FILE__ == $PROGRAM_NAME

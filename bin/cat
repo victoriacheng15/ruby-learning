@@ -2,3 +2,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/cat'
+
+if __FILE__ == $PROGRAM_NAME
+  CatTool.run_cli(ARGV)
+end

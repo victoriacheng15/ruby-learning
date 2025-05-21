@@ -21,3 +21,31 @@ describe 'Cat Command - parse_options' do
     _(args).must_equal ['file.txt']
   end
 end
+
+describe 'Cat Command - print output' do
+ let(:sample_text) { "foo\n\nbar\nbaz\n" }
+
+  it 'prints all lines as-is by default' do
+    output = StringIO.new
+    $stdout = output
+    CatTool.print_output(sample_text, { number_lines: false, number_nonblank_lines: false })
+    $stdout = STDOUT
+    _(output.string).must_equal sample_text
+  end
+
+  it 'numbers all lines with -n' do
+    output = StringIO.new
+    $stdout = output
+    CatTool.print_output(sample_text, { number_lines: true, number_nonblank_lines: false })
+    $stdout = STDOUT
+    _(output.string).must_equal "\t1 foo\n\t2 \n\t3 bar\n\t4 baz\n"
+  end
+
+  it 'numbers only non-blank lines with -b' do
+    output = StringIO.new
+    $stdout = output
+    CatTool.print_output(sample_text, { number_lines: false, number_nonblank_lines: true })
+    $stdout = STDOUT
+    _(output.string).must_equal "\t1 foo\n\n\t2 bar\n\t3 baz\n"
+  end
+end

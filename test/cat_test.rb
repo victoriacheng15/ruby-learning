@@ -23,12 +23,13 @@ describe 'Cat Command - parse_options' do
 end
 
 describe 'Cat Command - print output' do
- let(:sample_text) { "foo\n\nbar\nbaz\n" }
+  let(:sample_text) { "foo\n\nbar\nbaz\n" }
 
   it 'prints all lines as-is by default' do
     output = StringIO.new
     $stdout = output
-    CatTool.print_output(sample_text, { number_lines: false, number_nonblank_lines: false })
+    CatTool.print_output(sample_text,
+                         { number_lines: false, number_nonblank_lines: false })
     $stdout = STDOUT
     _(output.string).must_equal sample_text
   end
@@ -36,7 +37,8 @@ describe 'Cat Command - print output' do
   it 'numbers all lines with -n' do
     output = StringIO.new
     $stdout = output
-    CatTool.print_output(sample_text, { number_lines: true, number_nonblank_lines: false })
+    CatTool.print_output(sample_text,
+                         { number_lines: true, number_nonblank_lines: false })
     $stdout = STDOUT
     _(output.string).must_equal "\t1 foo\n\t2 \n\t3 bar\n\t4 baz\n"
   end
@@ -44,7 +46,8 @@ describe 'Cat Command - print output' do
   it 'numbers only non-blank lines with -b' do
     output = StringIO.new
     $stdout = output
-    CatTool.print_output(sample_text, { number_lines: false, number_nonblank_lines: true })
+    CatTool.print_output(sample_text,
+                         { number_lines: false, number_nonblank_lines: true })
     $stdout = STDOUT
     _(output.string).must_equal "\t1 foo\n\n\t2 bar\n\t3 baz\n"
   end

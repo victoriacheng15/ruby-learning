@@ -41,7 +41,7 @@ module WcTool
     [options, argv]
   end
 
-  def default_output(result)
+  def self.default_output(result)
     [result[:lines], result[:words], result[:bytes], result[:filename]]
   end
 

@@ -96,4 +96,3 @@ describe 'Cat Command - read 2 files' do
     File.delete('test_file2.txt') if File.exist?('test_file2.txt')
   end
 end
-

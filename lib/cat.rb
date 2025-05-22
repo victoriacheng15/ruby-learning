@@ -57,9 +57,9 @@ module CatTool
   end
 
   def self.check_file_existence(filename)
-    unless File.exist?(filename)
-      notify_error("File not found: #{filename}")
-    end
+    return if File.exist?(filename)
+
+    notify_error("File not found: #{filename}")
   end
 
   def self.run_cli(argv)

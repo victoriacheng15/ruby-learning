@@ -58,7 +58,7 @@ end
 
 describe 'Cat Command - process inputs from either file or stdin' do
   it 'reads from a file' do
-    options= { number_lines: false, number_nonblank_lines: false }
+    options = { number_lines: false, number_nonblank_lines: false }
     File.open('test_file.txt', 'w') { |file| file.write("foo\nbar\nbaz\n") }
     output = StringIO.new
     $stdout = output

@@ -74,6 +74,5 @@ module CatTool
       puts "File not found: #{filename}"
       exit 1
     end
-
   end
 end

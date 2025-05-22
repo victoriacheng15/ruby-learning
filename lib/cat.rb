@@ -56,12 +56,14 @@ module CatTool
     print_output(text, options)
   end
 
+  def self.check_file_existence(filename)
+    unless File.exist?(filename)
+      notify_error("File not found: #{filename}")
+    end
+  end
+
   def self.run_cli(argv)
     options, args = parse_options(argv)
-    if args.empty?
-      puts 'No filename provided. Reading from stdin.'
-      exit 1
-    end
 
     if args.empty?
       content = $stdin.read
@@ -75,7 +77,6 @@ module CatTool
           end
         else
           puts "File not found: #{filename}"
-          exit 1
         end
       end
     end

@@ -60,9 +60,20 @@ module CatTool
     options, args = parse_options(argv)
     filename = args[0]
 
-    File.open(filename, 'r') do |file|
-      content = file.read
+    puts "Filename: #{filename}" if filename
+
+    if filename && File.exist?(filename)
+      File.open(filename, 'r') do |file|
+        content = file.read
+        process_input(content, options)
+      end
+    elsif !$stdin.tty?
+      content = $stdin.read
       process_input(content, options)
+    else
+      puts "File not found: #{filename}"
+      exit 1
     end
+
   end
 end

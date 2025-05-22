@@ -80,3 +80,20 @@ describe 'Cat Command - process inputs from either file or stdin' do
     _(output.string).must_equal "foo\nbar\nbaz\n"
   end
 end
+
+describe 'Cat Command - read 2 files' do
+  it 'reads from two files via run_cli' do
+    File.write('test_file1.txt', "foo\nbar\n")
+    File.write('test_file2.txt', "baz\nqux\n")
+    output = StringIO.new
+    $stdout = output
+    CatTool.run_cli(['test_file1.txt', 'test_file2.txt'])
+    $stdout = STDOUT
+
+    _(output.string).must_equal "foo\nbar\nbaz\nqux\n"
+  ensure
+    File.delete('test_file1.txt') if File.exist?('test_file1.txt')
+    File.delete('test_file2.txt') if File.exist?('test_file2.txt')
+  end
+end
+

@@ -3,7 +3,7 @@
 require 'optparse'
 
 module GrepTool
-  def self.run_cli(argv)
-    puts "GrepTool is not implemented yet."
+  def self.run_cli(_argv)
+    puts 'GrepTool is not implemented yet.'
   end
 end

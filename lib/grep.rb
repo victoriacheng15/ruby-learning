@@ -50,10 +50,10 @@ module GrepTool
 
   def self.process_input(content, pattern, options)
     pattern = if options[:ignore_case]
-      Regexp.new(pattern, Regexp::IGNORECASE)
-    else
-      Regexp.new(pattern)
-    end
+                Regexp.new(pattern, Regexp::IGNORECASE)
+              else
+                Regexp.new(pattern)
+              end
 
     print_output(content, pattern, options)
   end

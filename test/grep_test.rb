@@ -4,7 +4,7 @@ require 'minitest/autorun'
 require 'stringio'
 require_relative '../lib/grep'
 
-describe "Grep command - parse options" do
+describe 'Grep command - parse options' do
   before do
     @options = {
       ignore_case: false,
@@ -12,7 +12,7 @@ describe "Grep command - parse options" do
     }
   end
 
-  it "should parse -i option" do
+  it 'should parse -i option' do
     args = ['-i', 'pattern', 'test.txt']
     options, _args = GrepTool.parse_options(args)
 
@@ -22,7 +22,7 @@ describe "Grep command - parse options" do
     _(args[1]).must_equal 'test.txt'
   end
 
-  it "should parse -v option" do
+  it 'should parse -v option' do
     args = ['-v', 'pattern', 'test.txt']
     options, _args = GrepTool.parse_options(args)
 

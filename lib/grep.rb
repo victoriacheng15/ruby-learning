@@ -25,12 +25,12 @@ module GrepTool
     [options, args]
   end
 
-  def self.run_cli(_argv)
-    options, args = parse_options(_argv)
+  def self.run_cli(argv)
+    options, args = parse_options(argv)
 
-    if args.size< 2
-      puts "Error: Missing pattern or filename."
-      puts "Usage: grep_tool.rb [options] pattern filename"
+    if args.size < 2
+      puts 'Error: Missing pattern or filename.'
+      puts 'Usage: grep_tool.rb [options] pattern filename'
       exit 1
     end
 

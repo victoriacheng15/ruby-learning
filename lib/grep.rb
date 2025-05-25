@@ -25,20 +25,48 @@ module GrepTool
     [options, args]
   end
 
+  def self.msg_for_args(args)
+    if args.empty?
+      puts 'Error: No arguments provided.'
+      puts 'Usage: ./bin/grep [options] pattern filename'
+      exit 1
+    end
+  end
+
+  def self.print_output(content,pattern, options)
+    content.each_line do | line |
+      matched = line.match?(pattern)
+
+      if options[:invert_match]
+        puts line unless matched
+      elsif matched
+        highlighted_line = line.gsub(pattern) { | match | "\e[31m#{match}\e[0m" }
+        puts highlighted_line
+      end
+    end
+  end
+
+  def self.process_input(content, pattern, options)
+    pattern = options[:ignore_case] ? Regexp.new(pattern, Regexp::IGNORECASE) : Regexp.new(pattern)
+    print_output(content, pattern, options)
+  end
+
   def self.run_cli(argv)
     options, args = parse_options(argv)
 
-    if args.size < 2
-      puts 'Error: Missing pattern or filename.'
-      puts 'Usage: grep_tool.rb [options] pattern filename'
-      exit 1
-    end
+    msg_for_args(args)
 
     pattern = args[0]
     filename = args[1]
 
-    puts "Options: #{options.inspect}"
-    puts "Pattern: #{pattern.inspect}"
-    puts "Filename: #{filename.inspect}"
+    if File.exist?(filename)
+      File.open(filename, 'r') do |file|
+        content = file.read
+        process_input(content, pattern, options)
+      end
+    else
+      puts "Error: File '#{filename}' does not exist."
+      exit 1
+    end
   end
 end

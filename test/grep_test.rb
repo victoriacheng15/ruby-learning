@@ -32,3 +32,50 @@ describe 'Grep command - parse options' do
     _(args[1]).must_equal 'test.txt'
   end
 end
+
+describe 'Grep command - process input' do
+  before do
+    @content = "This is a test line.\nAnother test line.\nYet another line."
+    @pattern = 'test'
+    @options = {
+      ignore_case: false,
+      invert_match: false
+    }
+  end
+
+  it 'should print matching lines' do
+    expected_output = "This is a \e[31mtest\e[0m line.\nAnother \e[31mtest\e[0m line.\n"
+    output = StringIO.new
+    $stdout = output
+
+    GrepTool.process_input(@content, @pattern, @options)
+
+    $stdout = STDOUT
+    _(output.string).must_equal expected_output
+  end
+
+  it 'should print non-matching lines when invert match is true' do
+    @options[:invert_match] = true
+    expected_output = "Yet another line.\n"
+    output = StringIO.new
+    $stdout = output
+
+    GrepTool.process_input(@content, @pattern, @options)
+
+    $stdout = STDOUT
+    _(output.string).must_equal expected_output
+  end
+
+  it 'should handle case insensitivity' do
+    @pattern = 'TEST'
+    @options[:ignore_case] = true
+    expected_output = "This is a \e[31mtest\e[0m line.\nAnother \e[31mtest\e[0m line.\n"
+    output = StringIO.new
+    $stdout = output
+
+    GrepTool.process_input(@content, @pattern, @options)
+
+    $stdout = STDOUT
+    _(output.string).must_equal expected_output
+  end
+end

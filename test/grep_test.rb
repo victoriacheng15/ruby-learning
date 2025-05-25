@@ -37,40 +37,32 @@ describe 'Grep command - process input - ignore case' do
   before do
     @content = "This is a test line.\nAnother test line.\nYet another line."
     @pattern = 'test'
-    @options = {
-      ignore_case: false,
-      invert_match: false
-    }
-  end
-
-  it 'should print matching lines' do
-    expected_output = <<~OUTPUT
+    @options = { ignore_case: false, invert_match: false }
+    @expected_output = <<~OUTPUT
       This is a \e[31mtest\e[0m line.
       Another \e[31mtest\e[0m line.
     OUTPUT
+  end
+
+  it 'should print matching lines' do
     output = StringIO.new
     $stdout = output
-
     GrepTool.process_input(@content, @pattern, @options)
-
     $stdout = STDOUT
-    _(output.string).must_equal expected_output
+
+    _(output.string).must_equal @expected_output
   end
 
   it 'should handle case insensitivity' do
     @pattern = 'TEST'
     @options[:ignore_case] = true
-    expected_output = <<~OUTPUT
-      This is a \e[31mtest\e[0m line.
-      Another \e[31mtest\e[0m line.
-    OUTPUT
+
     output = StringIO.new
     $stdout = output
-
     GrepTool.process_input(@content, @pattern, @options)
-
     $stdout = STDOUT
-    _(output.string).must_equal expected_output
+
+    _(output.string).must_equal @expected_output
   end
 end
 

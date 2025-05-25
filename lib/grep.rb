@@ -37,7 +37,6 @@ module GrepTool
     pattern = args[0]
     filename = args[1]
 
-
     puts "Options: #{options.inspect}"
     puts "Pattern: #{pattern.inspect}"
     puts "Filename: #{filename.inspect}"

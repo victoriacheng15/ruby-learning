@@ -40,7 +40,7 @@ module GrepTool
       if options[:invert_match]
         puts line unless matched
       elsif matched
-        highlighted_line = line.gsub(pattern) do |match| 
+        highlighted_line = line.gsub(pattern) do |match|
           "\e[31m#{match}\e[0m"
         end
         puts highlighted_line
@@ -49,12 +49,12 @@ module GrepTool
   end
 
   def self.process_input(content, pattern, options)
-    if options[:ignore_case]
-      pattern = Regexp.new(pattern, Regexp::IGNORECASE)
+    pattern = if options[:ignore_case]
+      Regexp.new(pattern, Regexp::IGNORECASE)
     else
-      pattern = Regexp.new(pattern)
+      Regexp.new(pattern)
     end
-    
+
     print_output(content, pattern, options)
   end
 

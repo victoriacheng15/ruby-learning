@@ -44,7 +44,10 @@ describe 'Grep command - process input - ignore case' do
   end
 
   it 'should print matching lines' do
-    expected_output = "This is a \e[31mtest\e[0m line.\nAnother \e[31mtest\e[0m line.\n"
+    expected_output = <<~OUTPUT
+      This is a \e[31mtest\e[0m line.
+      Another \e[31mtest\e[0m line.
+    OUTPUT
     output = StringIO.new
     $stdout = output
 
@@ -57,7 +60,10 @@ describe 'Grep command - process input - ignore case' do
   it 'should handle case insensitivity' do
     @pattern = 'TEST'
     @options[:ignore_case] = true
-    expected_output = "This is a \e[31mtest\e[0m line.\nAnother \e[31mtest\e[0m line.\n"
+    expected_output = <<~OUTPUT
+      This is a \e[31mtest\e[0m line.
+      Another \e[31mtest\e[0m line.
+    OUTPUT
     output = StringIO.new
     $stdout = output
 

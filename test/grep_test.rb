@@ -33,7 +33,7 @@ describe 'Grep command - parse options' do
   end
 end
 
-describe 'Grep command - process input' do
+describe 'Grep command - process input - ignore case' do
   before do
     @content = "This is a test line.\nAnother test line.\nYet another line."
     @pattern = 'test'
@@ -54,9 +54,10 @@ describe 'Grep command - process input' do
     _(output.string).must_equal expected_output
   end
 
-  it 'should print non-matching lines when invert match is true' do
-    @options[:invert_match] = true
-    expected_output = "Yet another line.\n"
+  it 'should handle case insensitivity' do
+    @pattern = 'TEST'
+    @options[:ignore_case] = true
+    expected_output = "This is a \e[31mtest\e[0m line.\nAnother \e[31mtest\e[0m line.\n"
     output = StringIO.new
     $stdout = output
 
@@ -65,11 +66,21 @@ describe 'Grep command - process input' do
     $stdout = STDOUT
     _(output.string).must_equal expected_output
   end
+end
 
-  it 'should handle case insensitivity' do
-    @pattern = 'TEST'
-    @options[:ignore_case] = true
-    expected_output = "This is a \e[31mtest\e[0m line.\nAnother \e[31mtest\e[0m line.\n"
+describe 'Grep command - process input - invert match' do
+  before do
+    @content = "This is a test line.\nAnother test line.\nYet another line."
+    @pattern = 'test'
+    @options = {
+      ignore_case: false,
+      invert_match: false
+    }
+  end
+
+  it 'should print non-matching lines when invert match is true' do
+    @options[:invert_match] = true
+    expected_output = "Yet another line.\n"
     output = StringIO.new
     $stdout = output
 

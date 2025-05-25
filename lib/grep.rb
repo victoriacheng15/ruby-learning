@@ -26,28 +26,35 @@ module GrepTool
   end
 
   def self.msg_for_args(args)
-    if args.empty?
-      puts 'Error: No arguments provided.'
-      puts 'Usage: ./bin/grep [options] pattern filename'
-      exit 1
-    end
+    return unless args.empty?
+
+    puts 'Error: No arguments provided.'
+    puts 'Usage: ./bin/grep [options] pattern filename'
+    exit 1
   end
 
-  def self.print_output(content,pattern, options)
-    content.each_line do | line |
+  def self.print_output(content, pattern, options)
+    content.each_line do |line|
       matched = line.match?(pattern)
 
       if options[:invert_match]
         puts line unless matched
       elsif matched
-        highlighted_line = line.gsub(pattern) { | match | "\e[31m#{match}\e[0m" }
+        highlighted_line = line.gsub(pattern) do |match| 
+          "\e[31m#{match}\e[0m"
+        end
         puts highlighted_line
       end
     end
   end
 
   def self.process_input(content, pattern, options)
-    pattern = options[:ignore_case] ? Regexp.new(pattern, Regexp::IGNORECASE) : Regexp.new(pattern)
+    if options[:ignore_case]
+      pattern = Regexp.new(pattern, Regexp::IGNORECASE)
+    else
+      pattern = Regexp.new(pattern)
+    end
+    
     print_output(content, pattern, options)
   end
 

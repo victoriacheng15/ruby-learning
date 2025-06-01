@@ -33,6 +33,32 @@ Sample text files are located in the `samples/` folder. You can use these files 
   ./bin/wc samples/wc.txt
   ```
 
+## Testing
+
+This project follows Test-Driven Development (TDD).
+- Tests are located in the test/ folder.
+- The tests are written using Ruby's built-in testing framework (e.g. minitest).
+
+Run test locally:
+```bash
+rake test
+``` 
+
+## Code Quality - Rubocop
+
+Rubocop is used to check Ruby code style and formatting.
+
+Run Rubocop locally:
+```bash
+rubocop -A lib/ test/
+```
+
+## DevOps practice with Github Actions
+
+This project uses GitHub Actions to automtically: 
+- Run tests
+- Lint and format code with Rubocop
+
 ## Requirements
 
 Ruby installed on your system (`ruby -v to check)

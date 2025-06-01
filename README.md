@@ -1,5 +1,8 @@
 # Ruby CLI Learning
 
+[![CI Test](https://github.com/victoriacheng15/ruby-cli-learning/actions/workflows/ci-test.yml/badge.svg)](https://github.com/victoriacheng15/ruby-cli-learning/actions/workflows/ci-test.yml) [![RuboCop Format](https://github.com/victoriacheng15/ruby-cli-learning/actions/workflows/rubocop.yml/badge.svg)](https://github.com/victoriacheng15/ruby-cli-learning/actions/workflows/rubocop.yml)
+
+
 This project is a simple Ruby command-line interface (CLI) tool collection to help me learn Ruby. It includes basic tools written from scratch in Ruby, similar to Unix commands like `cat`, `grep`, and `wc`.
 
 ## Tools Included
@@ -37,7 +40,7 @@ Sample text files are located in the `samples/` folder. You can use these files 
 
 This project follows Test-Driven Development (TDD).
 - Tests are located in the test/ folder.
-- The tests are written using Ruby's built-in testing framework (e.g. minitest).
+- The tests are written using Ruby's built-in testing framework (e.g. `minitest`).
 
 Run test locally:
 ```bash
@@ -59,14 +62,25 @@ This project uses GitHub Actions to automtically:
 - Run tests
 - Lint and format code with Rubocop
 
+Workflow files:
+- .github/workflows/test.yml
+- .github/workflows/rubocop.yml
+
 ## Requirements
 
-Ruby installed on your system (`ruby -v to check)
+Ruby installed on your system
+Check with:
+```bash
+ruby -v
+```
 
 ## Why this project?
 
 I’m learning Ruby by building small command-line tools. This helps me understand:
 - File I/O in Ruby
 - String manipulation
-- Working with arguments (ARGV)
+- Working with command-line arguments (ARGV)
 - Writing executable scripts
+- Writing tests using TDD
+- Using RuboCop for clean code
+- Practicing CI with GitHub Actions

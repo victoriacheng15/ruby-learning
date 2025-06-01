@@ -3,6 +3,4 @@
 
 require_relative '../lib/cat'
 
-if __FILE__ == $PROGRAM_NAME
-  CatTool.run_cli(ARGV)
-end
+CatTool.run_cli(ARGV) if __FILE__ == $PROGRAM_NAME

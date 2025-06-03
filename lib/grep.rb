@@ -3,13 +3,24 @@
 require_relative 'shared/cli_utils'
 
 module GrepTool
+  OPTION_DEFS = [
+    {
+      flags: ['-i', '--ignore-case'],
+      desc: 'Ignore case distinctions',
+      action: ->(opts, _) { opts[:ignore_case] = true }
+    },
+    {
+      flags: ['-v', '--invert-match'],
+      desc: 'Invert the sense of matching',
+      action: ->(opts, _) { opts[:invert_match] = true }
+    }
+  ].freeze
+
   def self.parse_options(args)
     options = { ignore_case: false, invert_match: false }
-    options_defs = [
-      { flags: ['-i', '--ignore-case'], desc: 'Ignore case distinctions', action: ->(opts, _) { opts[:ignore_case] = true } },
-      { flags: ['-v', '--invert-match'], desc: 'Invert the sense of matching', action: ->(opts, _) { opts[:invert_match] = true } }
-    ]
-    CLIUtils.parse_options(args, options, options_defs, banner: 'Usage: grep_tool.rb [options] pattern filename')
+
+    banner = 'Usage: grep_tool.rb [options] pattern filename'
+    CLIUtils.parse_options(args, options, OPTION_DEFS, banner: banner)
   end
 
   def self.msg_for_args(args)

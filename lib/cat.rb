@@ -1,32 +1,26 @@
 # frozen_string_literal: true
 
-require 'optparse'
+require_relative 'shared/cli_utils'
 
 module CatTool
-  def self.option_definition(options)
-    OptionParser.new do |opts|
-      opts.banner = 'Usage: cat_tool.rb [options] filename'
-      opts.on('-n', '--number', 'Number all output lines') do
-        options[:number_lines] = true
-      end
-      opts.on('-b', '--number-nonblank', 'Number non-blank output lines') do
-        options[:number_nonblank_lines] = true
-      end
-      opts.on('-h', '--help', 'Display help message') do
-        puts opts
-        exit
-      end
-    end
-  end
+  OPTION_DEFS = [
+    {
+      flags: ['-n', '--number'],
+      desc: 'Number all output lines',
+      action: ->(opts, _) { opts[:number_lines] = true }
+    },
+    {
+      flags: ['-b', '--number-nonblank'],
+      desc: 'Number non-blank output lines',
+      action: ->(opts, _) { opts[:number_nonblank_lines] = true }
+    }
+  ].freeze
 
   def self.parse_options(args)
-    options = {
-      number_lines: false,
-      number_nonblank_lines: false
-    }
-    parser = option_definition(options)
-    parser.parse!(args)
-    [options, args]
+    options = { number_lines: false, number_nonblank_lines: false }
+
+    banner = 'Usage: cat_tool.rb [options] filename'
+    CLIUtils.parse_options(args, options, OPTION_DEFS, banner: banner)
   end
 
   def self.print_output(content, options)

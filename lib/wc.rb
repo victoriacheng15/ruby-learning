@@ -1,8 +1,37 @@
 # frozen_string_literal: true
 
-require 'optparse'
+require_relative 'shared/cli_utils'
 
 module WcTool
+  OPTION_DEFS = [
+    {
+      flags: ['-l', '--lines'],
+      desc: 'Print the newline counts',
+      action: ->(opts, _) { opts[:lines] = true }
+    },
+    {
+      flags: ['-w', '--words'],
+      desc: 'Print the word counts',
+      action: ->(opts, _) { opts[:words] = true }
+    },
+    {
+      flags: ['-m', '--chars'],
+      desc: 'Print the character counts',
+      action: ->(opts, _) { opts[:chars] = true }
+    },
+    {
+      flags: ['-c', '--bytes'],
+      desc: 'Print the byte counts',
+      action: ->(opts, _) { opts[:bytes] = true }
+    }
+  ].freeze
+
+  def self.parse_options(argv)
+    options = { lines: false, words: false, chars: false, bytes: false }
+    banner = 'Usage: wc_tool.rb [options] filename'
+    CLIUtils.parse_options(argv, options, OPTION_DEFS, banner: banner)
+  end
+
   def self.process_input(content, filename)
     text = content.respond_to?(:read) ? content.read : content
     text.force_encoding('BINARY')
@@ -14,31 +43,6 @@ module WcTool
       bytes: text.bytesize,
       filename: filename
     }
-  end
-
-  def self.option_definition(options)
-    OptionParser.new do |opts|
-      opts.banner = 'Usage: wc.rb [options] filename'
-      opts.on('-l', '--lines', 'Print the newline counts') do
-        options[:lines] = true
-      end
-      opts.on('-w', '--words', 'Print the word counts') do
-        options[:words] = true
-      end
-      opts.on('-m', '--chars', 'Print the character counts') do
-        options[:chars] = true
-      end
-      opts.on('-c', '--bytes', 'Print the byte counts') do
-        options[:bytes] = true
-      end
-    end
-  end
-
-  def self.parse_options(argv)
-    options = { lines: false, words: false, chars: false, bytes: false }
-    parser = option_definition(options)
-    parser.parse!(argv)
-    [options, argv]
   end
 
   def self.default_output(result)

@@ -1,28 +1,15 @@
 # frozen_string_literal: true
 
-require 'optparse'
+require_relative 'shared/cli_utils'
 
 module GrepTool
-  def self.option_definition(options)
-    OptionParser.new do |opts|
-      opts.banner = 'Usage: grep_tool.rb [options] pattern filename'
-      opts.on('-i', '--ignore-case', 'Ignore case distinctions') do
-        options[:ignore_case] = true
-      end
-      opts.on('-v', '--invert-match', 'Invert the sense of matching') do
-        options[:invert_match] = true
-      end
-    end
-  end
-
   def self.parse_options(args)
-    options = {
-      ignore_case: false,
-      invert_match: false
-    }
-    parser = option_definition(options)
-    parser.parse!(args)
-    [options, args]
+    options = { ignore_case: false, invert_match: false }
+    options_defs = [
+      { flags: ['-i', '--ignore-case'], desc: 'Ignore case distinctions', action: ->(opts, _) { opts[:ignore_case] = true } },
+      { flags: ['-v', '--invert-match'], desc: 'Invert the sense of matching', action: ->(opts, _) { opts[:invert_match] = true } }
+    ]
+    CLIUtils.parse_options(args, options, options_defs, banner: 'Usage: grep_tool.rb [options] pattern filename')
   end
 
   def self.msg_for_args(args)

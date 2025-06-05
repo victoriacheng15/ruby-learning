@@ -1,26 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'shared/cli_utils'
+require_relative 'configs/cat_config'
 
 module CatTool
-  OPTION_DEFS = [
-    {
-      flags: ['-n', '--number'],
-      desc: 'Number all output lines',
-      action: ->(opts, _) { opts[:number_lines] = true }
-    },
-    {
-      flags: ['-b', '--number-nonblank'],
-      desc: 'Number non-blank output lines',
-      action: ->(opts, _) { opts[:number_nonblank_lines] = true }
-    }
-  ].freeze
-
   def self.parse_options(args)
     options = { number_lines: false, number_nonblank_lines: false }
 
     banner = 'Usage: cat_tool.rb [options] filename'
-    CLIUtils.parse_options(args, options, OPTION_DEFS, banner: banner)
+    CLIUtils.parse_options(args, options, CAT_OPTION_DEFS, banner: banner)
   end
 
   def self.print_output(content, options)

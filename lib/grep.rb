@@ -44,28 +44,28 @@ module GrepTool
     print_output(content, pattern, options)
   end
 
-def self.run_cli(argv)
-  options, args = parse_options(argv)
-  msg_for_args(args)
+  def self.run_cli(argv)
+    options, args = parse_options(argv)
+    msg_for_args(args)
 
-  pattern = args[0]
-  filenames = args[1..] || []
+    pattern = args[0]
+    filenames = args[1..] || []
 
-  if filenames.empty?
-    # Read from stdin if no files are given
-    content = $stdin.read
-    process_input(content, pattern, options)
-  else
-    filenames.each do |filename|
-      if File.exist?(filename)
-        File.open(filename, 'r') do |file|
-          content = file.read
-          process_input(content, pattern, options)
+    if filenames.empty?
+      # Read from stdin if no files are given
+      content = $stdin.read
+      process_input(content, pattern, options)
+    else
+      filenames.each do |filename|
+        if File.exist?(filename)
+          File.open(filename, 'r') do |file|
+            content = file.read
+            process_input(content, pattern, options)
+          end
+        else
+          warn "Error: File '#{filename}' does not exist."
         end
-      else
-        warn "Error: File '#{filename}' does not exist."
       end
     end
   end
-end
 end

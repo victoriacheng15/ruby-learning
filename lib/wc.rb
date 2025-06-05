@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'shared/cli_utils'
-require_relative 'configs/wc_config.rb'
+require_relative 'configs/wc_config'
 
 module WcTool
   def self.parse_options(argv)

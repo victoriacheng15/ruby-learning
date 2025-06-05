@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 CAT_OPTION_DEFS = [
   {
     flags: ['-n', '--number'],

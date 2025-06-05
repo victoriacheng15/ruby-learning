@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 WC_OPTION_DEFS = [
   {
     flags: ['-l', '--lines'],

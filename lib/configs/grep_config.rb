@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 GREP_OPTION_DEFS = [
   {
     flags: ['-i', '--ignore-case'],

@@ -41,7 +41,7 @@ module CatTool
   def self.run_cli(argv)
     options, args = parse_options(argv)
 
-    CLIUtils.each_input_file(args) do |content, filename|
+    CLIUtils.each_input_file(args) do |content, _filename|
       process_input(content, options)
     end
   end

@@ -51,7 +51,7 @@ module GrepTool
     pattern = args[0]
     filenames = args[1..] || []
 
-    CLIUtils.each_input_file(filenames) do |content, filename|
+    CLIUtils.each_input_file(filenames) do |content, _filename|
       process_input(content, pattern, options)
     end
   end

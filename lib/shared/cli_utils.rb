@@ -24,4 +24,21 @@ module CLIUtils
     parser.parse!(argv)
     [options, argv]
   end
+
+  def self.each_input_file(filenames)
+    if filenames.nil? || filenames.empty?
+      yield $stdin.read, nil
+    else
+      filenames.each do |filename|
+        if File.exist?(filename)
+          File.open(filename, 'r') do |file|
+            yield file.read, filename
+          end
+        else
+          warn "File not found: #{filename}"
+          exit 1
+        end
+      end
+    end
+  end
 end

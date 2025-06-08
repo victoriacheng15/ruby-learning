@@ -50,21 +50,9 @@ module WcTool
 
   def self.run_cli(argv)
     options, args = parse_options(argv)
-    filename = args[0]
-
-    if filename && File.exist?(filename)
-      file = File.open(filename, 'r')
-    elsif !$stdin.tty?
-      file = $stdin
-      filename = nil
-    else
-      puts "File not found: #{filename}"
-      exit 1
+    CLIUtils.each_input_file(args) do |content, filename|
+      result = process_input(content, filename)
+      print_output(result, options)
     end
-
-    result = process_input(file, filename)
-    file.close unless file == $stdin
-
-    print_output(result, options)
   end
 end

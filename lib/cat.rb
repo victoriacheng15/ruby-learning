@@ -41,20 +41,8 @@ module CatTool
   def self.run_cli(argv)
     options, args = parse_options(argv)
 
-    if args.empty?
-      content = $stdin.read
+    CLIUtils.each_input_file(args) do |content, _filename|
       process_input(content, options)
-    else
-      args.each do |filename|
-        if File.exist?(filename)
-          File.open(filename, 'r') do |file|
-            content = file.read
-            process_input(content, options)
-          end
-        else
-          puts "File not found: #{filename}"
-        end
-      end
     end
   end
 end

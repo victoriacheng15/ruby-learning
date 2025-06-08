@@ -51,21 +51,8 @@ module GrepTool
     pattern = args[0]
     filenames = args[1..] || []
 
-    if filenames.empty?
-      # Read from stdin if no files are given
-      content = $stdin.read
+    CLIUtils.each_input_file(filenames) do |content, _filename|
       process_input(content, pattern, options)
-    else
-      filenames.each do |filename|
-        if File.exist?(filename)
-          File.open(filename, 'r') do |file|
-            content = file.read
-            process_input(content, pattern, options)
-          end
-        else
-          warn "Error: File '#{filename}' does not exist."
-        end
-      end
     end
   end
 end

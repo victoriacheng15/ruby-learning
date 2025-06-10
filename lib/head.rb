@@ -3,7 +3,7 @@
 require_relative 'shared/cli_utils'
 
 module HeadTool
-  def self.run_cli(argv) 
+  def self.run_cli(_argv)
     puts 'This is the head tool CLI.'
   end
 end

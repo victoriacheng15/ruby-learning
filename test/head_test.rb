@@ -38,53 +38,53 @@ describe 'Head command - parse options' do
     _(options[:quiet]).must_equal true
     _(args[0]).must_equal 'test.txt'
   end
+end
 
-  describe 'Head command - run_cli' do
-    before do
-      @content = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\nLine 6\nLine 7\nLine 8\nLine 9\nLine 10"
-      @expected_output = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\n"
-    end
+describe 'Head command - run_cli' do
+  before do
+    @content = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\nLine 6\nLine 7\nLine 8\nLine 9\nLine 10"
+    @expected_output = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\n"
+  end
 
-    it 'should print first N lines from stdin' do
-      input = StringIO.new(@content)
-      output = StringIO.new
-      $stdin = input
-      $stdout = output
+  it 'should print first N lines from stdin' do
+    input = StringIO.new(@content)
+    output = StringIO.new
+    $stdin = input
+    $stdout = output
 
-      HeadTool.run_cli(['-n', '5'])
+    HeadTool.run_cli(['-n', '5'])
 
-      $stdin = STDIN
-      $stdout = STDOUT
+    $stdin = STDIN
+    $stdout = STDOUT
 
-      _(output.string).must_equal @expected_output
-    end
+    _(output.string).must_equal @expected_output
+  end
 
-    it 'should print first N bytes from stdin' do
-      input = StringIO.new(@content)
-      output = StringIO.new
-      $stdin = input
-      $stdout = output
+  it 'should print first N bytes from stdin' do
+    input = StringIO.new(@content)
+    output = StringIO.new
+    $stdin = input
+    $stdout = output
 
-      HeadTool.run_cli(['-c', '30'])
+    HeadTool.run_cli(['-c', '30'])
 
-      $stdin = STDIN
-      $stdout = STDOUT
+    $stdin = STDIN
+    $stdout = STDOUT
 
-      _(output.string).must_equal "Line 1\nLine 2\n"
-    end
+    _(output.string).must_equal "Line 1\nLine 2\n"
+  end
 
-    it 'should handle quiet mode' do
-      input = StringIO.new(@content)
-      output = StringIO.new
-      $stdin = input
-      $stdout = output
+  it 'should handle quiet mode' do
+    input = StringIO.new(@content)
+    output = StringIO.new
+    $stdin = input
+    $stdout = output
 
-      HeadTool.run_cli(['-q'])
+    HeadTool.run_cli(['-q'])
 
-      $stdin = STDIN
-      $stdout = STDOUT
+    $stdin = STDIN
+    $stdout = STDOUT
 
-      _(output.string).must_equal @expected_output # No headers printed in quiet mode
-    end
+    _(output.string).must_equal @expected_output # No headers printed in quiet mode
   end
 end

@@ -21,6 +21,9 @@ HEAD_OPTION_DEFS = [
   {
     flags: ['--help'],
     desc: 'Display this help message',
-    action: ->(_, _) { puts 'Usage: head [OPTION]... [FILE]...'; exit }
+    action: lambda { |_, _|
+      puts 'Usage: head [OPTION]... [FILE]...'
+      exit
+    }
   }
 ].freeze

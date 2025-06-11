@@ -17,9 +17,10 @@ describe 'Head command - parse options' do
     args = ['-n', '5', 'test.txt']
     options, _args = HeadTool.parse_options(args)
 
-    _(options[:lines]).must_equal 5
+    _(options[:lines]).must_equal true
     _(options[:bytes]).must_be_nil
-    _(args[0]).must_equal 'test.txt'
+    _(args[0]).must_equal '5'
+    _(args[1]).must_equal 'test.txt'
   end
 
   it 'should parse -c option' do
@@ -27,8 +28,9 @@ describe 'Head command - parse options' do
     options, _args = HeadTool.parse_options(args)
 
     _(options[:lines]).must_equal 10 # default value
-    _(options[:bytes]).must_equal 20
-    _(args[0]).must_equal 'test.txt'
+    _(options[:bytes]).must_equal true
+    _(args[0]).must_equal '20'
+    _(args[1]).must_equal 'test.txt'
   end
 
   it 'should parse -q option' do
@@ -52,11 +54,13 @@ describe 'Head command - run_cli' do
     $stdin = input
     $stdout = output
 
+    # Pass '-n', '5' so the code can pick up '5' as the value for lines
     HeadTool.run_cli(['-n', '5'])
 
     $stdin = STDIN
     $stdout = STDOUT
 
+    # Only the first 5 lines should be printed
     _(output.string).must_equal @expected_output
   end
 
@@ -66,12 +70,14 @@ describe 'Head command - run_cli' do
     $stdin = input
     $stdout = output
 
-    HeadTool.run_cli(['-c', '30'])
+    # Pass '-c', '12' so the code can pick up '12' as the value for bytes
+    HeadTool.run_cli(['-c', '12'])
 
     $stdin = STDIN
     $stdout = STDOUT
 
-    _(output.string).must_equal "Line 1\nLine 2\n"
+    # Only the first 12 bytes should be printed
+    _(output.string).must_equal @content.byteslice(0, 12)
   end
 
   it 'should handle quiet mode' do

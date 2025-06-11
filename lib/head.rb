@@ -5,10 +5,10 @@ require_relative 'configs/head_config'
 
 module HeadTool
   def self.parse_options(args)
-    options = { lines: 10, bytes: nil, quiet: false }
+    options = { lines: false, bytes: false, quiet: false }
 
     banner = 'Usage: head_tool.rb [options] [file]...'
-    CLIUtils.parse_options(args, options, HEAD_OPTION_DEFS, banner: banner)
+    CLIUtils.parse_options(args, options, HeadConfig::HEAD_OPTION_DEFS, banner: banner)
   end
 
   def self.msg_for_args(args)
@@ -19,22 +19,37 @@ module HeadTool
     exit 1
   end
 
-  def self.process_file(content, options)
-    if options[:bytes]
-      puts content.byteslice(0, options[:bytes])
+  def self.process_input(content, options, num)
+    case
+    when options[:lines]
+      puts content.lines.first(num).join
+    when options[:bytes]
+      print content.byteslice(0, num)
     else
-      puts content.lines.first(options[:lines])
+      puts content.lines.first(10).join
     end
   end
 
-  def self.run_cli(argv)
-    options = parse_options(argv)
-    msg_for_args(argv)
+  def self.process_args(argv)
+    expanded_argv = []
+    number = nil
+    argv.each do |arg|
+      if arg =~ /^-(n|c)(\d+)$/
+        expanded_argv << "-#{$1}"
+        number = $2.to_i
+      else
+        expanded_argv << arg
+      end
+    end
+    [expanded_argv, number]
+  end
 
-    filenames = argv.empty? ? ['-'] : argv
+  def self.run_cli(argv)
+    expanded_argv, number = process_args(argv)
+    options, filenames = parse_options(expanded_argv)
 
     CLIUtils.each_input_file(filenames) do |content, _filename|
-      process_file(content, options)
+      process_input(content, options, number)
     end
   end
 end

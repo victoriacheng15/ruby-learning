@@ -21,9 +21,9 @@ module HeadConfig
       flags: ['--help'],
       desc: 'Display this help message',
       action: lambda { |_, _|
-          puts 'Usage: head [OPTION]... [FILE]...'
-          exit
-        }
+        puts 'Usage: head [OPTION]... [FILE]...'
+        exit
+      }
     }
   ].freeze
 end

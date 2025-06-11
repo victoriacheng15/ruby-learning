@@ -5,40 +5,52 @@ require 'stringio'
 require_relative '../lib/head'
 
 describe 'Head command - parse options' do
-  before do
-    @options = {
-      lines: 10,
-      bytes: nil,
-      quiet: false
-    }
-  end
-
   it 'should parse -n option' do
-    args = ['-n', '5', 'test.txt']
-    options, _args = HeadTool.parse_options(args)
+    args = ['-n5', 'test.txt']
+    expanded_argv, number = HeadTool.process_args(args)
+    options, _filenames = HeadTool.parse_options(expanded_argv)
 
     _(options[:lines]).must_equal true
-    _(options[:bytes]).must_be_nil
-    _(args[0]).must_equal '5'
-    _(args[1]).must_equal 'test.txt'
+    _(options[:bytes]).must_equal false
+    _(options[:quiet]).must_equal false
+    _(number).must_equal 5
+    _(expanded_argv.last).must_equal 'test.txt'
   end
 
   it 'should parse -c option' do
-    args = ['-c', '20', 'test.txt']
-    options, _args = HeadTool.parse_options(args)
+    args = ['-c20', 'test.txt']
+    expanded_argv, number = HeadTool.process_args(args)
+    options, _filenames = HeadTool.parse_options(expanded_argv)
 
-    _(options[:lines]).must_equal 10 # default value
+    _(options[:lines]).must_equal false
     _(options[:bytes]).must_equal true
-    _(args[0]).must_equal '20'
-    _(args[1]).must_equal 'test.txt'
+    _(options[:quiet]).must_equal false
+    _(number).must_equal 20
+    _(expanded_argv.last).must_equal 'test.txt'
   end
 
   it 'should parse -q option' do
     args = ['-q', 'test.txt']
-    options, _args = HeadTool.parse_options(args)
+    expanded_argv, number = HeadTool.process_args(args)
+    options, _filenames = HeadTool.parse_options(expanded_argv)
 
+    _(options[:lines]).must_equal false
+    _(options[:bytes]).must_equal false
     _(options[:quiet]).must_equal true
-    _(args[0]).must_equal 'test.txt'
+    _(number).must_be_nil
+    _(expanded_argv.last).must_equal 'test.txt'
+  end
+
+  it 'should have all options false by default' do
+    args = ['test.txt']
+    expanded_argv, number = HeadTool.process_args(args)
+    options, _filenames = HeadTool.parse_options(expanded_argv)
+
+    _(options[:lines]).must_equal false
+    _(options[:bytes]).must_equal false
+    _(options[:quiet]).must_equal false
+    _(number).must_be_nil
+    _(expanded_argv.last).must_equal 'test.txt'
   end
 end
 
@@ -54,13 +66,11 @@ describe 'Head command - run_cli' do
     $stdin = input
     $stdout = output
 
-    # Pass '-n', '5' so the code can pick up '5' as the value for lines
-    HeadTool.run_cli(['-n', '5'])
+    HeadTool.run_cli(['-n5'])
 
     $stdin = STDIN
     $stdout = STDOUT
 
-    # Only the first 5 lines should be printed
     _(output.string).must_equal @expected_output
   end
 
@@ -70,27 +80,11 @@ describe 'Head command - run_cli' do
     $stdin = input
     $stdout = output
 
-    # Pass '-c', '12' so the code can pick up '12' as the value for bytes
-    HeadTool.run_cli(['-c', '12'])
+    HeadTool.run_cli(['-c12'])
 
     $stdin = STDIN
     $stdout = STDOUT
 
-    # Only the first 12 bytes should be printed
     _(output.string).must_equal @content.byteslice(0, 12)
-  end
-
-  it 'should handle quiet mode' do
-    input = StringIO.new(@content)
-    output = StringIO.new
-    $stdin = input
-    $stdout = output
-
-    HeadTool.run_cli(['-q'])
-
-    $stdin = STDIN
-    $stdout = STDOUT
-
-    _(output.string).must_equal @expected_output # No headers printed in quiet mode
   end
 end

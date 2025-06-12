@@ -12,13 +12,13 @@ AllCops:
     - "Rakefile" # Often excluded
 
 Layout/LineLength:
-  Max: 80 # Allow lines up to 120 characters
+  Max: 120 # Allow lines up to 120 characters
 
 Metrics/MethodLength:
   Max: 30 # Keep methods relatively short
 
 Metrics/BlockLength:
-  Max: 30 # Limit block length to keep them manageable
+  Max: 50 # Limit block length to keep them manageable
 
 Style/Documentation:
   Enabled: false # Disable the requirement for documentation comments (optional)

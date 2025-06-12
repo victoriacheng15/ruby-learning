@@ -8,6 +8,11 @@ module WcConfig
       action: ->(opts, _) { opts[:bytes] = true }
     },
     {
+      flags: ['-m', '--chars'],
+      desc: 'Print the character counts',
+      action: ->(opts, _) { opts[:chars] = true }
+    },
+    {
       flags: ['-l', '--lines'],
       desc: 'Print the newline counts',
       action: ->(opts, _) { opts[:lines] = true }

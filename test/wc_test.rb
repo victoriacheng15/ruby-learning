@@ -47,7 +47,7 @@ describe 'Wc Command - run_cli' do
     $stdout = output
     WcTool.run_cli(['-l', 'test.txt'])
     $stdout = STDOUT
-    _(output.string.strip).must_equal "2 test.txt"
+    _(output.string.strip).must_equal '2 test.txt'
     File.delete('test.txt')
   end
 
@@ -57,7 +57,7 @@ describe 'Wc Command - run_cli' do
     $stdout = output
     WcTool.run_cli(['-w', 'test.txt'])
     $stdout = STDOUT
-    _(output.string.strip).must_equal "4 test.txt"
+    _(output.string.strip).must_equal '4 test.txt'
     File.delete('test.txt')
   end
 

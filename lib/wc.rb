@@ -6,15 +6,16 @@ require_relative 'configs/wc_config'
 module WcTool
   def self.parse_options(argv)
     options = { lines: false, words: false, chars: false, bytes: false }
-    banner = 'Usage: wc_tool.rb [options] filename'
+    banner = 'Usage: ./bin/cat [options] filename'
     CLIUtils.parse_options(argv, options, WcConfig::WC_OPTION_DEFS, banner: banner)
   end
 
   def self.msg_for_args(args)
     return unless args.empty?
 
-    puts 'Error: No files provided.'
-    puts 'Usage: ./bin/wc [options] filename'
+    puts "Error: No input files or arguments provided."
+    puts "Usage: ./bin/cat [options] [file ...]"
+    puts "Try './bin/cat --help' for more information."
     exit 1
   end
 
@@ -59,7 +60,7 @@ module WcTool
   def self.run_cli(argv)
     options, args = parse_options(argv)
     msg_for_args(args)
-    
+
     CLIUtils.each_input_file(args) do |content, filename|
       result = process_input(content, filename)
       print_output(result, options)

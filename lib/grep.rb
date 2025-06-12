@@ -8,7 +8,7 @@ module GrepTool
     options = { ignore_case: false, invert_match: false }
 
     banner = 'Usage: grep_tool.rb [options] pattern filename'
-    CLIUtils.parse_options(args, options, GREP_OPTION_DEFS, banner: banner)
+    CLIUtils.parse_options(args, options, GrepConfig::GREP_OPTION_DEFS, banner: banner)
   end
 
   def self.msg_for_args(args)

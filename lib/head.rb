@@ -20,10 +20,9 @@ module HeadTool
   end
 
   def self.process_input(content, options, num)
-    case
-    when options[:lines]
+    if options[:lines]
       puts content.lines.first(num).join
-    when options[:bytes]
+    elsif options[:bytes]
       print content.byteslice(0, num)
     else
       puts content.lines.first(10).join
@@ -35,8 +34,8 @@ module HeadTool
     number = nil
     argv.each do |arg|
       if arg =~ /^-(n|c)(\d+)$/
-        expanded_argv << "-#{$1}"
-        number = $2.to_i
+        expanded_argv << "-#{::Regexp.last_match(1)}"
+        number = ::Regexp.last_match(2).to_i
       else
         expanded_argv << arg
       end

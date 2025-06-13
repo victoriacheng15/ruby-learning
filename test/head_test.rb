@@ -9,7 +9,6 @@ describe 'Head command - parse options' do
     args = ['-n5', 'test.txt']
     expanded_argv, number = HeadTool.process_args(args)
     options, _filenames = HeadTool.parse_options(expanded_argv)
-
     _(options[:lines]).must_equal true
     _(options[:bytes]).must_equal false
     _(options[:quiet]).must_equal false
@@ -21,7 +20,6 @@ describe 'Head command - parse options' do
     args = ['-c20', 'test.txt']
     expanded_argv, number = HeadTool.process_args(args)
     options, _filenames = HeadTool.parse_options(expanded_argv)
-
     _(options[:lines]).must_equal false
     _(options[:bytes]).must_equal true
     _(options[:quiet]).must_equal false
@@ -33,7 +31,6 @@ describe 'Head command - parse options' do
     args = ['-q', 'test.txt']
     expanded_argv, number = HeadTool.process_args(args)
     options, _filenames = HeadTool.parse_options(expanded_argv)
-
     _(options[:lines]).must_equal false
     _(options[:bytes]).must_equal false
     _(options[:quiet]).must_equal true
@@ -45,7 +42,6 @@ describe 'Head command - parse options' do
     args = ['test.txt']
     expanded_argv, number = HeadTool.process_args(args)
     options, _filenames = HeadTool.parse_options(expanded_argv)
-
     _(options[:lines]).must_equal false
     _(options[:bytes]).must_equal false
     _(options[:quiet]).must_equal false
@@ -65,12 +61,9 @@ describe 'Head command - run_cli' do
     output = StringIO.new
     $stdin = input
     $stdout = output
-
     HeadTool.run_cli(['-n5'])
-
     $stdin = STDIN
     $stdout = STDOUT
-
     _(output.string).must_equal @expected_output
   end
 
@@ -79,12 +72,9 @@ describe 'Head command - run_cli' do
     output = StringIO.new
     $stdin = input
     $stdout = output
-
     HeadTool.run_cli(['-c12'])
-
     $stdin = STDIN
     $stdout = STDOUT
-
     _(output.string).must_equal @content.byteslice(0, 12)
   end
 end

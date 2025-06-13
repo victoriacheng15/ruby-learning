@@ -9,21 +9,16 @@ module HeadConfig
     },
     {
       flags: ['-c', '--bytes'],
-      desc: 'Output the first NUM bytes instead of the first 10',
+      desc: 'Output the first NUM bytes of each file',
       action: ->(opts, _) { opts[:bytes] = true }
     },
     {
       flags: ['-q', '--quiet', '--silent'],
       desc: 'Never print headers giving file names',
       action: ->(opts, _) { opts[:quiet] = true }
-    },
-    {
-      flags: ['--help'],
-      desc: 'Display this help message',
-      action: lambda { |_, _|
-        puts 'Usage: head [OPTION]... [FILE]...'
-        exit
-      }
     }
+    # TODO: -v, --verbose option
+    # add support for -v, --verbose - print always print heqders giving file names
+    # ==> samples/cat.txt <==
   ].freeze
 end

@@ -7,15 +7,16 @@ module HeadTool
   def self.parse_options(args)
     options = { lines: false, bytes: false, quiet: false }
 
-    banner = 'Usage: head_tool.rb [options] [file]...'
+    banner = 'Usage: ./bin/head [options] filename...'
     CLIUtils.parse_options(args, options, HeadConfig::HEAD_OPTION_DEFS, banner: banner)
   end
 
   def self.msg_for_args(args)
     return unless args.empty?
 
-    puts 'Error: No files provided.'
-    puts 'Usage: ./bin/head [options] [file]...'
+    puts 'Error: No input files or arguments provided.'
+    puts 'Usage: ./bin/head [options] [file ...]'
+    puts "Try './bin/head --help' for more information."
     exit 1
   end
 

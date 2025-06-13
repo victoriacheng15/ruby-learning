@@ -7,15 +7,16 @@ module GrepTool
   def self.parse_options(args)
     options = { ignore_case: false, invert_match: false }
 
-    banner = 'Usage: grep_tool.rb [options] pattern filename'
-    CLIUtils.parse_options(args, options, GREP_OPTION_DEFS, banner: banner)
+    banner = 'Usage: ./bin/grep [options] pattern filename'
+    CLIUtils.parse_options(args, options, GrepConfig::GREP_OPTION_DEFS, banner: banner)
   end
 
   def self.msg_for_args(args)
     return unless args.empty?
 
-    puts 'Error: No arguments provided.'
-    puts 'Usage: ./bin/grep [options] pattern filename'
+    puts 'Error: No input files or arguments provided.'
+    puts 'Usage: ./bin/grep [options] pattern [file ...]'
+    puts "Try './bin/grep --help' for more information."
     exit 1
   end
 

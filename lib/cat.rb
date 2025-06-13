@@ -7,8 +7,17 @@ module CatTool
   def self.parse_options(args)
     options = { number_lines: false, number_nonblank_lines: false }
 
-    banner = 'Usage: cat_tool.rb [options] filename'
-    CLIUtils.parse_options(args, options, CAT_OPTION_DEFS, banner: banner)
+    banner = 'Usage: ./bin/cat [options] filename'
+    CLIUtils.parse_options(args, options, CatConfig::CAT_OPTION_DEFS, banner: banner)
+  end
+
+  def self.msg_for_args(args)
+    return unless args.empty?
+
+    puts 'Error: No input files or arguments provided.'
+    puts 'Usage: ./bin/cat [options] [file ...]'
+    puts "Try './bin/cat --help' for more information."
+    exit 1
   end
 
   def self.print_output(content, options)
@@ -40,6 +49,7 @@ module CatTool
 
   def self.run_cli(argv)
     options, args = parse_options(argv)
+    msg_for_args(args)
 
     CLIUtils.each_input_file(args) do |content, _filename|
       process_input(content, options)

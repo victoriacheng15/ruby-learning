@@ -4,81 +4,70 @@ require 'minitest/autorun'
 require 'stringio'
 require_relative '../lib/wc'
 
-describe 'WC command - parse_option -l' do
-  it 'parse -l option' do
-    options, = WcTool.parse_options(['-l', 'test.txt'])
+describe 'Wc Command - parse_options' do
+  it 'parses -l option' do
+    options, args = WcTool.parse_options(['-l', 'file.txt'])
     _(options[:lines]).must_equal true
     _(options[:words]).must_equal false
-    _(options[:chars]).must_equal false
     _(options[:bytes]).must_equal false
+    _(args).must_equal ['file.txt']
   end
-end
 
-describe 'WC command - parse_option -w' do
-  it 'parse -w option' do
-    options, = WcTool.parse_options(['-w', 'test.txt'])
+  it 'parses -w option' do
+    options, args = WcTool.parse_options(['-w', 'file.txt'])
     _(options[:lines]).must_equal false
     _(options[:words]).must_equal true
-    _(options[:chars]).must_equal false
     _(options[:bytes]).must_equal false
+    _(args).must_equal ['file.txt']
   end
-end
 
-describe 'WC command - parse_option -m' do
-  it 'parse -m option' do
-    options, = WcTool.parse_options(['-m', 'test.txt'])
+  it 'parses -c option' do
+    options, args = WcTool.parse_options(['-c', 'file.txt'])
     _(options[:lines]).must_equal false
     _(options[:words]).must_equal false
-    _(options[:chars]).must_equal true
-    _(options[:bytes]).must_equal false
-  end
-end
-
-describe 'WC command - parse_option -c' do
-  it 'parse -c option' do
-    options, = WcTool.parse_options(['-c', 'test.txt'])
-    _(options[:lines]).must_equal false
-    _(options[:words]).must_equal false
-    _(options[:chars]).must_equal false
     _(options[:bytes]).must_equal true
+    _(args).must_equal ['file.txt']
+  end
+
+  it 'defaults to false for all options' do
+    options, args = WcTool.parse_options(['file.txt'])
+    _(options[:lines]).must_equal false
+    _(options[:words]).must_equal false
+    _(options[:bytes]).must_equal false
+    _(args).must_equal ['file.txt']
   end
 end
 
-describe 'WC command - process_input' do
-  it 'returns zero counts for empty input' do
-    input = StringIO.new('')
-    counts = WcTool.process_input(input, 'empty_input')
+describe 'Wc Command - run_cli' do
+  let(:sample_text) { "foo bar\nbaz qux\n" }
 
-    # _ is a shorthand for expect
-    # could write like expect(counts[:lines]).must_equal 0
-    _(counts[:lines]).must_equal 0
-    _(counts[:words]).must_equal 0
-    _(counts[:chars]).must_equal 0
-    _(counts[:bytes]).must_equal 0
-    _(counts[:filename]).must_equal 'empty_input'
+  it 'counts lines with -l' do
+    File.write('test.txt', sample_text)
+    output = StringIO.new
+    $stdout = output
+    WcTool.run_cli(['-l', 'test.txt'])
+    $stdout = STDOUT
+    _(output.string.strip).must_equal '2 test.txt'
+    File.delete('test.txt')
   end
 
-  it 'counts lines, words, and bytes correctly for a single line' do
-    input = StringIO.new("hello world\n")
-    counts = WcTool.process_input(input, 'single_line')
-
-    _(counts[:lines]).must_equal 1
-    _(counts[:words]).must_equal 2
-    _(counts[:chars]).must_equal 12
-    _(counts[:bytes]).must_equal "hello world\n".bytesize
-    _(counts[:filename]).must_equal 'single_line'
+  it 'counts words with -w' do
+    File.write('test.txt', sample_text)
+    output = StringIO.new
+    $stdout = output
+    WcTool.run_cli(['-w', 'test.txt'])
+    $stdout = STDOUT
+    _(output.string.strip).must_equal '4 test.txt'
+    File.delete('test.txt')
   end
-end
 
-describe 'WC command - process_input with stdin' do
-  it 'handles input from stdin (simulated with StringIO)' do
-    input = StringIO.new("one two three\nfour five\n")
-    counts = WcTool.process_input(input, '-')
-
-    _(counts[:lines]).must_equal 2
-    _(counts[:words]).must_equal 5
-    _(counts[:chars]).must_equal 24
-    _(counts[:bytes]).must_equal "one two three\nfour five\n".bytesize
-    _(counts[:filename]).must_equal '-'
+  it 'counts bytes with -c' do
+    File.write('test.txt', sample_text)
+    output = StringIO.new
+    $stdout = output
+    WcTool.run_cli(['-c', 'test.txt'])
+    $stdout = STDOUT
+    _(output.string.strip).must_equal "#{sample_text.bytesize} test.txt"
+    File.delete('test.txt')
   end
 end

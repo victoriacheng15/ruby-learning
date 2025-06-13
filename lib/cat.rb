@@ -14,8 +14,8 @@ module CatTool
   def self.msg_for_args(args)
     return unless args.empty?
 
-    puts "Error: No input files or arguments provided."
-    puts "Usage: ./bin/cat [options] [file ...]"
+    puts 'Error: No input files or arguments provided.'
+    puts 'Usage: ./bin/cat [options] [file ...]'
     puts "Try './bin/cat --help' for more information."
     exit 1
   end

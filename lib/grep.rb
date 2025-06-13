@@ -14,8 +14,8 @@ module GrepTool
   def self.msg_for_args(args)
     return unless args.empty?
 
-    puts "Error: No input files or arguments provided."
-    puts "Usage: ./bin/grep [options] pattern [file ...]"
+    puts 'Error: No input files or arguments provided.'
+    puts 'Usage: ./bin/grep [options] pattern [file ...]'
     puts "Try './bin/grep --help' for more information."
     exit 1
   end

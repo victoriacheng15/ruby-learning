@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 require_relative 'shared/cli_utils'
 require_relative 'configs/less_config'
 
@@ -22,7 +21,7 @@ module LessTool
   end
 
   def self.run_cli(argv)
-    options, filenames = parse_options(argv)
+    _, filenames = parse_options(argv)
 
     CLIUtils.each_input_file(filenames) do |content, _filename|
       puts content

@@ -2,10 +2,11 @@
 
 require_relative 'shared/cli_utils'
 require_relative 'configs/less_config'
+require 'io/console'
 
 module LessTool
   def self.parse_options(args)
-    options = { line_numbers: false, chop_long_lines: false, quit_if_one_screen: false, no_init: false }
+    options = { line_numbers: false }
 
     banner = 'Usage: ./bin/less [options] filename...'
     CLIUtils.parse_options(args, options, LessConfig::LESS_OPTION_DEFS, banner: banner)
@@ -19,14 +20,21 @@ module LessTool
     puts "Try './bin/less --help' for more information."
     exit 1
   end
-
+  
   def self.run_cli(argv)
-    _, filenames = parse_options(argv)
+    options, args = parse_options(argv)
+    msg_for_args(args)
+
+    filenames = args
 
     CLIUtils.each_input_file(filenames) do |content, _filename|
-      puts content
-      # Here you would implement the actual less functionality
-      # For now, we just print the content
+      if options[:line_numbers]
+        content.lines.each_with_index do |line, index|
+          puts "\t#{index + 1}: #{line.chomp}"
+        end
+      else
+        puts content
+      end
     end
   end
 end

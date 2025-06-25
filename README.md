@@ -10,6 +10,8 @@ This project is a simple Ruby command-line interface (CLI) tool collection to he
 - `cat` - Reads and displays the content of a file.
 - `grep` - Searches for a string in a file and prints matching lines.
 - `wc` - Counts words, lines, and characters in a file.
+- `head` - Displays the first part of files.
+- `less` - Shows file content one screen at a time.
 
 These tools are located in the `bin/` folder.
 
@@ -34,6 +36,8 @@ Sample text files are located in the `samples/` folder. You can use these files 
   ./bin/cat samples/cat.txt
   ./bin/grep "search term" samples/grep.txt
   ./bin/wc samples/wc.txt
+  ./bin/head samples/head.txt
+  ./bin/less samples/less.txt
   ```
 
 ## Testing

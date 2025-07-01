@@ -20,7 +20,7 @@ module LessTool
     puts "Try './bin/less --help' for more information."
     exit 1
   end
-  
+
   def self.run_cli(argv)
     options, args = parse_options(argv)
     msg_for_args(args)

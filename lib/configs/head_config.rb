@@ -17,8 +17,5 @@ module HeadConfig
       desc: 'Never print headers giving file names',
       action: ->(opts, _) { opts[:quiet] = true }
     }
-    # TODO: -v, --verbose option
-    # add support for -v, --verbose - print always print heqders giving file names
-    # ==> samples/cat.txt <==
   ].freeze
 end
